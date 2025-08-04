@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>When Hearts Whisper - E-Book</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        /* Book Page Size: 5.5 x 8.5 inches */
+        .a5-page {
+            width: 8.5in;
+            min-height: 5.5in;
+            max-width: 100%;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        /* Professional Typography */
+        .novel-text {
+            font-family: 'EB Garamond', Garamond, Georgia, serif;
+            font-size: 12pt;
+            line-height: 1.15;
+            text-align: justify;
+            color: #2c2c2c;
+        }
+
+        .chapter-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 16pt;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #1a1a1a;
+        }
+
+        .book-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24pt;
+            font-weight: 700;
+            text-align: center;
+            color: #1a1a1a;
+        }
+
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 14pt;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+        }
+
+        /* Professional Margins */
+        .page-content {
+            padding: 0.75in 0.6in;
+            max-width: 7.3in; /* 8.5 - 1.2 inches for margins */
+            margin: 0 auto;
+        }
+
+        /* Paragraph Indentation */
+        .novel-text p {
+            text-indent: 0.25in;
+            margin-bottom: 0;
+        }
+
+        .novel-text p:first-of-type {
+            text-indent: 0;
+        }
+
+        /* Page Transitions */
+        .page {
+            display: none;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Print Styles */
+        @media print {
+            .a5-page {
+                width: 8.5in;
+                height: 5.5in;
+                margin: 0;
+                box-shadow: none;
+                page-break-after: always;
+            }
+            
+            .navigation {
+                display: none;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                padding-top: 5rem;
+                padding-bottom: 1rem;
+                justify-content: flex-start;
+            }
+            
+            .a5-page {
+                width: 100%;
+                min-height: auto;
+                margin: 0.5rem;
+                border-radius: 0.5rem;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            }
+            
+            .page-content {
+                padding: 1.5rem 1rem;
+                max-width: 100%;
+            }
+            
+            .novel-text {
+                font-size: 16px;
+                line-height: 1.6;
+                text-indent: 1.5rem;
+            }
+            
+            .chapter-title {
+                font-size: 1.5rem;
+                margin-bottom: 1.5rem;
+                text-align: center;
+            }
+            
+            .book-title {
+                font-size: 1.75rem;
+                margin-bottom: 1rem;
+            }
+            
+            /* Navigation improvements for mobile */
+            .navigation {
+                padding: 0.75rem 0;
+            }
+            
+            .nav-content {
+                padding: 0 1rem;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            
+            .nav-buttons {
+                gap: 0.25rem;
+                flex-wrap: wrap;
+            }
+            
+            .nav-btn {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8rem;
+                min-width: auto;
+            }
+            
+            .settings-btn {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+            }
+            
+            /* Main container adjustments */
+            .main-container {
+                padding-top: 5rem;
+                padding-bottom: 2rem;
+            }
+            
+            /* Special formatting adjustments for mobile */
+            .quote, .message, .sanjay, .sameena {
+                margin: 1.5rem 0;
+                padding: 1rem;
+                font-size: 15px;
+                line-height: 1.5;
+            }
+            
+            .centered {
+                margin: 1.5rem 0;
+            }
+            
+            /* Book cover image optimization */
+            img[src="book-cover.png"] {
+                max-width: 280px !important;
+                max-height: 420px !important;
+                width: 100%;
+                height: auto;
+            }
+        }
+        
+        /* Extra small devices */
+        @media (max-width: 480px) {
+            .main-container {
+                padding-top: 4.5rem;
+                padding-bottom: 0.5rem;
+            }
+            
+            .a5-page {
+                margin: 0.25rem;
+            }
+            
+            .page-content {
+                padding: 1rem 0.75rem;
+            }
+            
+            .novel-text {
+                font-size: 15px;
+                line-height: 1.5;
+            }
+            
+            .chapter-title {
+                font-size: 1.25rem;
+            }
+            
+            .book-title {
+                font-size: 1.5rem;
+            }
+            
+            .nav-content {
+                padding: 0 0.75rem;
+            }
+            
+            .nav-btn {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.75rem;
+            }
+            
+            .settings-btn {
+                padding: 0.4rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Dark Mode */
+        .dark-mode {
+            background: #1a1a1a;
+        }
+
+        .dark-mode .a5-page {
+            background: #2d2d2d;
+            color: #e5e5e5;
+        }
+
+        .dark-mode .novel-text {
+            color: #e5e5e5;
+        }
+
+        .dark-mode .chapter-title,
+        .dark-mode .book-title {
+            color: #f5f5f5;
+        }
+
+        /* Reading Progress */
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transition: width 0.3s ease;
+            z-index: 1000;
+        }
+
+        /* Navigation */
+        .navigation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e7eb;
+            z-index: 100;
+            padding: 0.5rem 0;
+        }
+
+        .nav-content {
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+            min-height: 44px; /* Touch-friendly minimum size */
+            touch-action: manipulation;
+        }
+
+        .nav-btn:hover {
+            background: #2563eb;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .settings-btn {
+            padding: 0.5rem;
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            min-height: 44px; /* Touch-friendly minimum size */
+            min-width: 44px;
+            touch-action: manipulation;
+            transition: all 0.2s;
+        }
+
+        .settings-btn:hover {
+            background: #e5e7eb;
+        }
+
+        /* Main Container */
+        .main-container {
+            padding-top: 4rem;
+            padding-bottom: 2rem;
+            min-height: 100vh;
+            background: #f8fafc;
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dark-mode .main-container {
+            background: #111827;
+        }
+
+        /* Special formatting for quotes and messages */
+        .quote {
+            font-style: italic;
+            color: #6b7280;
+            padding-left: 1rem;
+            border-left: 4px solid #3b82f6;
+            margin: 1rem 0;
+        }
+
+        .message {
+            font-style: italic;
+            color: #6b7280;
+            padding-left: 1rem;
+            border-left: 4px solid #10b981;
+            margin: 1rem 0;
+        }
+
+        .centered {
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .sanjay {
+            display: block;
+            background: #f0f9ff;
+            color: #1e40af;
+            font-style: italic;
+            border-left: 4px solid #3b82f6;
+            margin: 1rem 0;
+            padding: 0.75rem 1rem;
+            border-radius: 0 0.375rem 0.375rem 0;
+            font-size: 11pt;
+        }
+        .sameena {
+            display: block;
+            background: #f0fdf4;
+            color: #166534;
+            font-style: italic;
+            border-left: 4px solid #22c55e;
+            margin: 1rem 0;
+            padding: 0.75rem 1rem;
+            border-radius: 0 0.375rem 0.375rem 0;
+            font-size: 11pt;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="navigation">
+        <div class="nav-content">
+            <h1 class="book-title text-lg">When Hearts Whisper</h1>
+            <div class="nav-buttons">
+                <button id="prevBtn" class="nav-btn">← Previous</button>
+                <span id="pageInfo" class="text-sm text-gray-600 px-2">Page 1 of 30</span>
+                <button id="nextBtn" class="nav-btn">Next →</button>
+                <button id="fontSizeBtn" class="settings-btn">Aa</button>
+                <button id="themeBtn" class="settings-btn">🌙</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Progress Bar -->
+    <div id="progressBar" class="progress-bar" style="width: 0%"></div>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Title Page -->
+        <!-- ...existing code... -->
+            <div id="page-0" class="page active">
+    <div class="a5-page" style="display: flex; align-items: center; justify-content: center; min-height: 8in;">
+        <!-- Book Cover -->
+        <img src="book-cover.png" alt="When Hearts Whisper Book Cover"
+             style="width: 5in; height: 8in; max-width: 100%; max-height: 100%; object-fit: contain; box-shadow: 0 4px 24px rgba(0,0,0,0.10); border-radius: 0.5rem;">
+        <!-- Library Card System -->
+        <div style="margin-left: 2rem; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; background: #f9fafb; padding: 2rem 1.5rem; border-radius: 1rem; box-shadow: 0 2px 12px #0001; min-width: 300px;">
+            <!-- Login Section -->
+            <div id="loginSection">
+                <h3 style="font-weight:700; margin-bottom: 1rem; color: #1f2937;">📚 Library Card Login</h3>
+                <label style="font-weight:600; margin-bottom: 0.5rem;">Library ID:</label>
+                <input id="libraryIdInput" type="text" placeholder="LIB-XXXX-XXXX" style="margin-bottom: 1rem; width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 0.375rem;">
+                <button id="loginBtn" style="background: #3b82f6; color: #fff; border: none; border-radius: 0.375rem; padding: 0.5rem 1.5rem; font-weight: 600; cursor: pointer; margin-right: 0.5rem;">Login</button>
+                <button id="createCardBtn" style="background: #10b981; color: #fff; border: none; border-radius: 0.375rem; padding: 0.5rem 1.5rem; font-weight: 600; cursor: pointer;">New Card</button>
+                <div id="loginStatus" style="margin-top: 1rem; font-weight: 500; display: none;"></div>
+            </div>
+
+            <!-- User Info Section (hidden initially) -->
+            <div id="userInfoSection" style="display: none; width: 100%;">
+                <h3 style="font-weight:700; margin-bottom: 1rem; color: #1f2937;">👤 Welcome Back!</h3>
+                <div id="userInfo" style="margin-bottom: 1.5rem; padding: 1rem; background: #e0f2fe; border-radius: 0.5rem;">
+                    <p style="margin: 0.25rem 0;"><strong>Library ID:</strong> <span id="displayLibraryId"></span></p>
+                    <p style="margin: 0.25rem 0;"><strong>Access Count:</strong> <span id="accessCount"></span></p>
+                    <p style="margin: 0.25rem 0;"><strong>Total Pages Read:</strong> <span id="totalPagesRead"></span></p>
+                </div>
+                
+                <!-- Name Input Section -->
+                <div id="nameInputSection">
+                    <h4 style="font-weight:600; margin-bottom: 1rem; color: #374151;">📝 Enter Character Names</h4>
+                    <label style="font-weight:600; margin-bottom: 0.5rem;">Female Name:</label>
+                    <input id="femaleNameInput" type="text" style="margin-bottom: 1rem; width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 0.375rem;">
+                    <label style="font-weight:600; margin-bottom: 0.5rem;">Male Name:</label>
+                    <input id="maleNameInput" type="text" style="margin-bottom: 1rem; width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 0.375rem;">
+                    <button id="setNamesBtn" style="background: #3b82f6; color: #fff; border: none; border-radius: 0.375rem; padding: 0.5rem 1.5rem; font-weight: 600; cursor: pointer; width: 100%;">Start Reading</button>
+                    <div id="nameStatus" style="margin-top: 1rem; font-weight: 500; display: none;"></div>
+                </div>
+                
+                <button id="logoutBtn" style="background: #ef4444; color: #fff; border: none; border-radius: 0.375rem; padding: 0.5rem 1rem; font-weight: 600; cursor: pointer; margin-top: 1rem; width: 100%;">Logout</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ...existing code... -->
+
+        <!-- Copyright Page -->
+        <div id="page-1" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <h2 class="page-title">Copyright Page</h2>
+                    <div class="novel-text">
+                        <p>All rights reserved. No part of this book may be reproduced, stored in a retrieval system, or transmitted in any form or by any means, electronic, mechanical, photocopying, recording, or otherwise, without the prior written permission of the author.</p>
+                        
+                        <p>This is a work of fiction. Any resemblance to actual persons, living or dead, or actual events is purely coincidental.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dedication -->
+        <div id="page-2" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <h2 class="page-title">Dedication</h2>
+                    <div class="novel-text centered">
+                        <p>For the ones who loved quietly,</p>
+                        <p>healed slowly,</p>
+                        <p>and found poetry in their pain.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 1 -->
+        <div id="page-3" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <h2 class="chapter-title">Chapter 1: The DM That Wasn't Meant to Be</h2>
+                    <div class="novel-text">
+                        <p>Sanjay didn't believe in fate — not until 2:03 AM on a Thursday night, when a message pinged on his phone:</p>
+                        
+                        <p class="sameena">"Hey... Is this the page that posted the poem about 'missing someone who's still alive'?"</p>
+                        
+                        <p>The account was private. No name, just a profile picture of painted skies and a single bio line:</p>
+                        
+                        <p class="centered">Dreaming in pixels. Healing in silence.</p>
+                        
+                        <p>He stared at the message. His heart didn't race — it paused.</p>
+                        
+                        <p>Sanjay had been anonymously running @WhispersInInk, a poetry page with barely 300 followers. He never promoted it. He wrote when his chest got too heavy. He never cared for likes or followers — only for truth, raw and aching, poured into lines.</p>
+                        
+                        <p>That night, he replied:</p>
+                        
+                        <p class="sanjay">"Yes. I wrote it."</p>
+                        
+                        <p>She replied instantly:</p>
+                        
+                        <p class="sameena">"It made me cry. But also… made me feel less alone. Thank you."</p>
+                        
+                        <p>He stared at her words longer than he should've. It wasn't just a message. It was a whisper across timelines — from one scarred soul to another.</p>
+                        
+                        <p>He hesitated… then typed:</p>
+                        
+                        <p class="sanjay">"Thank you for reading."</p>
+                        
+                        <p>Her name was Sameena.</p>
+                        
+                        <p>And that was how it began — not with flowers or glances, but with a poem and two tired souls typing quietly into the dark.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 2 -->
+        <div id="page-4" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>Sanjay didn't sleep that night. He scrolled through her profile — art, photos of books, videos of rain, quotes about healing.</p>
+                        
+                        <p>Something about her felt familiar. Like a page from a book he hadn't written yet, but already loved.</p>
+                        
+                        <p>And somewhere, between 2:03 AM and dawn, he smiled. For the first time in a long time — not because he was happy.</p>
+                        
+                        <p>But because someone, somewhere, understood the language of his silence.</p>
+                        
+                        <p>Sameena's messages became his favorite notifications.</p>
+                        
+                        <p>Each ping was like a pebble in the still lake of his life. Not disruptive, but gently reminding him he wasn't alone.</p>
+                        
+                        <p>She asked thoughtful questions: "What does your silence sound like?"</p>
+                        
+                        <p>He answered honestly: "Like an old song nobody listens to, but I still remember every word."</p>
+                        
+                        <p>She sent voice notes. Her voice was calm, raw, imperfect. She didn't try to sound beautiful. She already was.</p>
+                        
+                        <p>One night, she sent him a note at 1:11 AM:</p>
+                        
+                        <p class="sameena">"Sanjay, you write the kind of pain people avoid. But I want to read it all."</p>
+                        
+                        <p>He stared at that message for ten minutes, replaying it. Not for validation.</p>
+                        
+                        <p>But because it felt like someone finally saw the storm he'd been hiding.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 3 -->
+        <div id="page-5" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>They started playing a little game. Each night, one would send a question. The other had to answer honestly.</p>
+                        
+                        <p>Sameena asked: "What memory do you wish you could live again?"</p>
+                        
+                        <p>Sanjay replied: "The night my dad held my hand during a thunderstorm. He said, 'The sky only shouts when it's afraid too.'"</p>
+                        
+                        <p>Sanjay asked: "What's one thing you never say out loud?"</p>
+                        
+                        <p>Sameena replied: "I'm scared people only like the version of me that smiles."</p>
+                        
+                        <p>In every answer, they unfolded. Layer by layer. Until vulnerability didn't feel like weakness.</p>
+                        
+                        <p>It felt like trust.</p>
+                        
+                        <p>They planned a meet.</p>
+                        
+                        <p>Just coffee. No expectations.</p>
+                        
+                        <p>Sanjay wore the only shirt he ironed himself — navy blue, slightly wrinkled, but honest.</p>
+                        
+                        <p>Sameena walked in wearing oversized denim and silver jhumkas. Hair tied. No makeup.</p>
+                        
+                        <p>When their eyes met, both forgot what nerves felt like.</p>
+                        
+                        <p>They didn't shake hands. They didn't hug.</p>
+                        
+                        <p>They just sat down. As if they'd done this a thousand times in dreams.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 4 -->
+        <div id="page-6" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>One hour turned into three.</p>
+                        
+                        <p>They talked about everything — rain, loss, first heartbreaks, favorite chai stalls.</p>
+                        
+                        <p>Sameena laughed with her whole face. Sanjay noticed. He also noticed she blinked faster when nervous.</p>
+                        
+                        <p>She said, "I don't believe in soulmates."</p>
+                        
+                        <p>He said, "I don't believe in endings."</p>
+                        
+                        <p>She sipped her coffee and whispered, "Then maybe we believe in the same kind of magic."</p>
+                        
+                        <p>They started seeing each other more often.</p>
+                        
+                        <p>Evening walks. Silent rooftops. A bookstore where they sat and read without buying anything.</p>
+                        
+                        <p>Sanjay took photos of Sameena when she wasn't looking.</p>
+                        
+                        <p>Sameena sketched Sanjay's silhouette into her diary, captioning it:</p>
+                        
+                        <p class="centered">"The boy who feels like a long exhale."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 5 -->
+        <div id="page-7" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>One day, it rained.</p>
+                        
+                        <p>Not just outside, but inside Sameena.</p>
+                        
+                        <p>She texted him: "Come. I don't want to talk. Just… be here."</p>
+                        
+                        <p>He showed up. No questions.</p>
+                        
+                        <p>She was curled on the floor. Hair messy. Eyes red.</p>
+                        
+                        <p>He sat beside her. No words.</p>
+                        
+                        <p>And in that silence, she whispered, "You make even my worst days breathable."</p>
+                        
+                        <p>He held her hand.</p>
+                        
+                        <p>And in that moment, love didn't need a confession.</p>
+                        
+                        <p>Sameena gave him a small handmade gift — a box filled with 27 folded paper stars.</p>
+                        
+                        <p>Each star had a line from one of his poems.</p>
+                        
+                        <p>"I read them when I forget how to feel," she said.</p>
+                        
+                        <p>He opened one:</p>
+                        
+                        <p class="centered">"You can't lose someone who became part of your breathing."</p>
+                        
+                        <p>He didn't cry.</p>
+                        
+                        <p>But he did look at her the way people look at miracles — gently, with disbelief.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 6 -->
+        <div id="page-8" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>One evening, Sanjay whispered, "I think I'm falling for you."</p>
+                        
+                        <p>Sameena smiled. Then paused.</p>
+                        
+                        <p>"Sanjay… I already fell. The day you made silence feel safe."</p>
+                        
+                        <p>They didn't kiss.</p>
+                        
+                        <p>They just touched foreheads.</p>
+                        
+                        <p>Two storms, finally resting.</p>
+                        
+                        <p>Their love wasn't loud.</p>
+                        
+                        <p>It was in the way Sanjay sent her playlists for different moods.</p>
+                        
+                        <p>It was in the way Sameena made space on her desk just for his notes.</p>
+                        
+                        <p>It was in the good mornings and voice notes and memes at 2 AM.</p>
+                        
+                        <p>It was love — not in grand gestures.</p>
+                        
+                        <p>But in soft, everyday repetitions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 7 -->
+        <div id="page-9" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>But not all days were perfect.</p>
+                        
+                        <p>Some days, she went silent.</p>
+                        
+                        <p>Some days, he overthought every word.</p>
+                        
+                        <p>One night she messaged:</p>
+                        
+                        <p class="sameena">"What if I'm too much? Too broken?"</p>
+                        
+                        <p>He replied:</p>
+                        
+                        <p class="sanjay">"Then I'll be the glue. Or the arms. Or the poem that tells you you're enough."</p>
+                        
+                        <p>She didn't reply that night.</p>
+                        
+                        <p>But the next morning, she sent a picture of the sunrise.</p>
+                        
+                        <p>Captioned: "You remind me of this. Constant, even after dark."</p>
+                        
+                        <p>Sanjay once asked, "What does peace look like to you?"</p>
+                        
+                        <p>Sameena replied, "A room where I don't have to shrink to fit in."</p>
+                        
+                        <p>He said, "Then let's build it. Even if it's just with words and Sunday mornings."</p>
+                        
+                        <p>She smiled. Because no one ever offered her space before — only silence.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 8 -->
+        <div id="page-10" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>They had a playlist. Not of love songs. But of songs that healed.</p>
+                        
+                        <p>"Ek Tarfa" when they missed each other.</p>
+                        
+                        <p>"Ilahi" when they wanted to escape.</p>
+                        
+                        <p>"Tu Kisi Rail Si" when words failed.</p>
+                        
+                        <p>Each song — a timestamp of emotions too fragile to say aloud.</p>
+                        
+                        <p>One day, she sent him a drawing of a boy holding a balloon shaped like a heart.</p>
+                        
+                        <p>The caption read:</p>
+                        
+                        <p class="centered">"He gives pieces of himself, hoping someone calls it love."</p>
+                        
+                        <p>Sanjay stared at it for hours.</p>
+                        
+                        <p>Then replied: "He just needs someone to hold the balloon with him. I will."</p>
+                        
+                        <p>She was afraid of attachments. He was afraid of being forgotten.</p>
+                        
+                        <p>Together, they wrote letters they never sent. Journals filled with 'almosts' and 'what-ifs.'</p>
+                        
+                        <p>But somehow, it was still real.</p>
+                        
+                        <p>Because feelings don't wait for perfect timing.</p>
+                        
+                        <p>They just bloom — wildly, unexpectedly.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 9 -->
+        <div id="page-11" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>Sanjay once whispered, "If you leave, don't forget the poems."</p>
+                        
+                        <p>Sameena said, "I'll never forget the poet."</p>
+                        
+                        <p>They didn't say 'forever.'</p>
+                        
+                        <p>They said 'as long as we can.'</p>
+                        
+                        <p>Because some love stories don't need promises — just presence.</p>
+                        
+                        <p>Sameena painted stars on her ceiling.</p>
+                        
+                        <p>She said, "So even on my worst nights, I remember light exists."</p>
+                        
+                        <p>Sanjay added tiny poems between them:</p>
+                        
+                        <p class="centered">"You're not lost. Just on pause."</p>
+                        
+                        <p class="centered">"Scars are just healed thunder."</p>
+                        
+                        <p>They made a universe of hope inside a rented room.</p>
+                        
+                        <p>Arguments happened.</p>
+                        
+                        <p>Once, Sameena cried because he didn't reply for six hours.</p>
+                        
+                        <p>He said, "I was drowning."</p>
+                        
+                        <p>She said, "You could've reached for me."</p>
+                        
+                        <p>They sat in silence, both realizing — love isn't just about feeling.</p>
+                        
+                        <p>It's about responsibility.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 10 -->
+        <div id="page-12" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>Sameena asked, "Would you still love me if I couldn't speak?"</p>
+                        
+                        <p>Sanjay replied, "I'd write you letters until my hands forgot how to shake."</p>
+                        
+                        <p>He meant it.</p>
+                        
+                        <p>Because even in her silence, she was poetry.</p>
+                        
+                        <p>They shared passwords.</p>
+                        
+                        <p>Not to spy.</p>
+                        
+                        <p>But to say — here, hold my fears. I trust you.</p>
+                        
+                        <p>Sameena's notes app was filled with unsent letters.</p>
+                        
+                        <p>Sanjay's browser had bookmarked her art.</p>
+                        
+                        <p>Two lives, gently braided.</p>
+                        
+                        <p>One night, he texted:</p>
+                        
+                        <p class="sanjay">"What are we?"</p>
+                        
+                        <p>She replied:</p>
+                        
+                        <p class="sameena">"Two people who found peace in each other's noise."</p>
+                        
+                        <p>And that night, peace had a name.</p>
+                        
+                        <p>It was whispered like a prayer — Sameena.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 11 -->
+        <div id="page-13" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>Sameena whispered once, "What if one day, we change?"</p>
+                        
+                        <p>Sanjay took her hand and said, "Then we'll meet each other again. Where we left our truth."</p>
+                        
+                        <p>Because love isn't about staying the same. It's about growing, without growing apart.</p>
+                        
+                        <p>Sanjay watched her paint in silence.</p>
+                        
+                        <p>She looked at colors the way people look at memories — carefully.</p>
+                        
+                        <p>He whispered, "Your hands are magic."</p>
+                        
+                        <p>She replied, "No. They just remember what pain taught me."</p>
+                        
+                        <p>And he realized — her art was her way of bleeding without a wound.</p>
+                        
+                        <p>They sat by the sea.</p>
+                        
+                        <p>Waves crashing. Hearts listening.</p>
+                        
+                        <p>Sameena said, "If I die first, will you write me?"</p>
+                        
+                        <p>He smiled sadly. "I already am."</p>
+                        
+                        <p>And she knew — she'd live forever in his lines.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 12 -->
+        <div id="page-14" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>One morning, Sanjay made her breakfast.</p>
+                        
+                        <p>Burnt toast. Overboiled chai. Lopsided smile.</p>
+                        
+                        <p>Sameena laughed, "This is terrible."</p>
+                        
+                        <p>He said, "But it's made with hands that love you."</p>
+                        
+                        <p>She took a bite — and swore it tasted like home.</p>
+                        
+                        <p>They visited a temple. She prayed. He watched.</p>
+                        
+                        <p>Afterwards, she asked, "Don't you believe?"</p>
+                        
+                        <p>He said, "I do. I just call my prayers 'poems.'"</p>
+                        
+                        <p>She held his hand tighter.</p>
+                        
+                        <p>Because faith comes in many forms. And sometimes, it's shaped like a person.</p>
+                        
+                        <p>Sameena got sick.</p>
+                        
+                        <p>Not dangerously. But enough to scare him.</p>
+                        
+                        <p>He sat by her bed, writing poems on post-its.</p>
+                        
+                        <p>Placing one on her pillow: "Even your cough sounds like a verse I want to memorize."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 13 -->
+        <div id="page-15" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>They had a list:</p>
+                        
+                        <p>• Visit the hills</p>
+                        
+                        <p>• Write a poem together</p>
+                        
+                        <p>• Record a podcast about heartbreak</p>
+                        
+                        <p>• Watch stars from a rooftop</p>
+                        
+                        <p>They did all of it.</p>
+                        
+                        <p>Except the last.</p>
+                        
+                        <p>Because it kept raining.</p>
+                        
+                        <p>So instead, they watched raindrops race on glass.</p>
+                        
+                        <p>Sameena whispered, "Maybe these are our stars."</p>
+                        
+                        <p>One day, they sat in a crowded café.</p>
+                        
+                        <p>Everyone noisy. Everything loud.</p>
+                        
+                        <p>But in the corner, with hands locked and glances exchanged — they were their own quiet.</p>
+                        
+                        <p>Sanjay wrote a poem he never posted:</p>
+                        
+                        <p class="centered">"You're not my world. You're the silence that holds it together."</p>
+                        
+                        <p>Sameena found it in his notebook.</p>
+                        
+                        <p>She didn't say a word.</p>
+                        
+                        <p>She just kissed the page.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 14 -->
+        <div id="page-16" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>Sameena once said, "If this ends… don't erase me."</p>
+                        
+                        <p>Sanjay replied, "Even if it ends — you'll always be the underline of every line I write."</p>
+                        
+                        <p>And in that moment, they didn't talk about endings.</p>
+                        
+                        <p>They just held on tighter.</p>
+                        
+                        <p>Because sometimes, holding on is the most romantic thing two people can do.</p>
+                        
+                        <p>Sameena painted a canvas for him.</p>
+                        
+                        <p>It was abstract — waves, stars, and a small figure holding a lantern.</p>
+                        
+                        <p>When Sanjay asked what it meant, she smiled.</p>
+                        
+                        <p>"You're the lantern. You don't fix the night, but you make it bearable."</p>
+                        
+                        <p>He stared at it for hours that night.</p>
+                        
+                        <p>Sanjay wasn't a fan of pictures.</p>
+                        
+                        <p>But she caught him off guard one evening, snapped a photo while he was laughing mid-sentence.</p>
+                        
+                        <p>She showed it to him and whispered,</p>
+                        
+                        <p>"This is what my peace looks like."</p>
+                        
+                        <p>That became his favorite picture.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 15 -->
+        <div id="page-17" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>Sameena had a habit of making playlists.</p>
+                        
+                        <p>One day she sent one titled: For The Boy With Tired Eyes.</p>
+                        
+                        <p>He listened to every song. Twice.</p>
+                        
+                        <p>On repeat.</p>
+                        
+                        <p>Because each lyric felt like her fingers brushing against his ribs,</p>
+                        
+                        <p>tapping rhythm into his hollow spaces.</p>
+                        
+                        <p>Their first real fight wasn't about something big.</p>
+                        
+                        <p>It was distance.</p>
+                        
+                        <p>A missed call. A cold reply.</p>
+                        
+                        <p>Two tired people not knowing how to say:</p>
+                        
+                        <p>"I miss you."</p>
+                        
+                        <p>It ended with her sending a one-line message:</p>
+                        
+                        <p class="sameena">"Can we not lose each other too?"</p>
+                        
+                        <p>They didn't.</p>
+                        
+                        <p>Sanjay once broke down on a video call.</p>
+                        
+                        <p>Sameena didn't interrupt.</p>
+                        
+                        <p>She just kept the call going,</p>
+                        
+                        <p>showing him the night sky,</p>
+                        
+                        <p>humming softly.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 16 -->
+        <div id="page-18" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>Later, she messaged:</p>
+                        
+                        <p class="sameena">"You're not weak. You're just finally letting someone in."</p>
+                        
+                        <p>He memorized her habits.</p>
+                        
+                        <p>The way she bit her lip while thinking.</p>
+                        
+                        <p>The small "hmm" she made while choosing words.</p>
+                        
+                        <p>The way she said "sorry" too often.</p>
+                        
+                        <p>And every time she said it for no reason,</p>
+                        
+                        <p>he'd gently respond:</p>
+                        
+                        <p>"You're allowed to take space here. It's yours too."</p>
+                        
+                        <p>They planned a trip.</p>
+                        
+                        <p>Just a weekend getaway — trains, cheap hotels, stolen moments.</p>
+                        
+                        <p>It wasn't about luxury.</p>
+                        
+                        <p>It was about being themselves — fully, loudly, without screens or goodbyes.</p>
+                        
+                        <p>Sameena said,</p>
+                        
+                        <p>"Even if it's two days, I want a memory that hurts beautifully."</p>
+                        
+                        <p>That trip changed everything.</p>
+                        
+                        <p>They kissed under a thunderstorm.</p>
+                        
+                        <p>Shared fries at a roadside stall.</p>
+                        
+                        <p>Watched movies curled up under one blanket.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 17 -->
+        <div id="page-19" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>And when the weekend ended, Sanjay said:</p>
+                        
+                        <p>"I want my life to feel like this weekend."</p>
+                        
+                        <p>Sameena replied:</p>
+                        
+                        <p>"Then let's never go back to 'almost'."</p>
+                        
+                        <p>They started using "us" more often.</p>
+                        
+                        <p>"We'll try that."</p>
+                        
+                        <p>"We'll go there."</p>
+                        
+                        <p>"We'll figure it out."</p>
+                        
+                        <p>It was subtle.</p>
+                        
+                        <p>But powerful.</p>
+                        
+                        <p>A small word that carried years of longing</p>
+                        
+                        <p>and the quiet hope:</p>
+                        
+                        <p>maybe this time, love wouldn't disappear.</p>
+                        
+                        <p>One night, they lay on the floor, earphones split,</p>
+                        
+                        <p>listening to a lo-fi track.</p>
+                        
+                        <p>Sameena whispered,</p>
+                        
+                        <p>"I don't think I'm built for forever."</p>
+                        
+                        <p>Sanjay kissed her knuckles and said:</p>
+                        
+                        <p>"Then let me be your always, one day at a time."</p>
+                        
+                        <p>She didn't reply.</p>
+                        
+                        <p>But her grip on his hand tightened.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 18 -->
+        <div id="page-20" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>Sameena's dad was admitted to the hospital.</p>
+                        
+                        <p>She didn't tell anyone.</p>
+                        
+                        <p>But Sanjay sensed it.</p>
+                        
+                        <p>He called without warning, and she answered in tears.</p>
+                        
+                        <p>"I just wanted one safe person," she whispered.</p>
+                        
+                        <p>He stayed on the call the whole night — silent, steady, there.</p>
+                        
+                        <p>After things settled, she left him a voice note:</p>
+                        
+                        <p>"You make heavy things feel carryable."</p>
+                        
+                        <p>He kept that audio.</p>
+                        
+                        <p>Sometimes, when the world got too loud,</p>
+                        
+                        <p>he played it on loop</p>
+                        
+                        <p>until it felt like her voice could stitch him back together.</p>
+                        
+                        <p>They never labeled their relationship.</p>
+                        
+                        <p>Not yet.</p>
+                        
+                        <p>But one night, she asked,</p>
+                        
+                        <p>"If I was a book, what genre would I be?"</p>
+                        
+                        <p>Sanjay replied,</p>
+                        
+                        <p>"Poetry. Because even your silence has rhythm."</p>
+                        
+                        <p>And she didn't reply — she just kissed him.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 19 -->
+        <div id="page-21" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>Sanjay met her friends.</p>
+                        
+                        <p>They asked, "Is this serious?"</p>
+                        
+                        <p>He looked at Sameena.</p>
+                        
+                        <p>She didn't answer either.</p>
+                        
+                        <p>But her hand found his under the table.</p>
+                        
+                        <p>Fingers curled.</p>
+                        
+                        <p>And that said everything.</p>
+                        
+                        <p>There was a phase where they stopped texting as often.</p>
+                        
+                        <p>Life got loud.</p>
+                        
+                        <p>But on the days he doubted it all,</p>
+                        
+                        <p>he'd open their old chat,</p>
+                        
+                        <p>scroll to the first time she said,</p>
+                        
+                        <p>"Thank you for existing."</p>
+                        
+                        <p>It reminded him — some people arrive like seasons. And stay.</p>
+                        
+                        <p>She once wrote a note in his notebook.</p>
+                        
+                        <p>He found it weeks later.</p>
+                        
+                        <p>It read:</p>
+                        
+                        <p class="sameena">"If ever you feel unloved, read this."</p>
+                        
+                        <p>And beneath that,</p>
+                        
+                        <p class="sameena">"I love you more than the sun loves the sky — because even the sky gets cloudy sometimes."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 20 -->
+        <div id="page-22" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>Sanjay surprised her with a stargazing night.</p>
+                        
+                        <p>They drove out of the city,</p>
+                        
+                        <p>sat on the hood, watching constellations.</p>
+                        
+                        <p>Sameena rested her head on his shoulder and said,</p>
+                        
+                        <p>"You're not just a person, Sanjay. You're a whole galaxy that never scared me."</p>
+                        
+                        <p>They didn't always agree.</p>
+                        
+                        <p>But even in fights,</p>
+                        
+                        <p>he never raised his voice.</p>
+                        
+                        <p>And she never walked away.</p>
+                        
+                        <p>Their rule:</p>
+                        
+                        <p>"We're on the same side — even when it's storming."</p>
+                        
+                        <p>And that kept them whole.</p>
+                        
+                        <p>Sanjay bought her a tiny ring.</p>
+                        
+                        <p>Nothing fancy.</p>
+                        
+                        <p>But inside it was engraved:</p>
+                        
+                        <p class="centered">"Still. Always."</p>
+                        
+                        <p>When he gave it to her, he said,</p>
+                        
+                        <p>"You don't have to wear it on your finger. Just keep it where your heart remembers."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 21 -->
+        <div id="page-23" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>She wore it on a chain.</p>
+                        
+                        <p>Close to her chest.</p>
+                        
+                        <p>She said, "It's my armor."</p>
+                        
+                        <p>Because every time life tried to break her,</p>
+                        
+                        <p>that ring reminded her:</p>
+                        
+                        <p>someone once saw every scar, and still chose to stay.</p>
+                        
+                        <p>Sameena wanted to run away some days.</p>
+                        
+                        <p>From pressure, pain, people.</p>
+                        
+                        <p>But Sanjay never told her to "stay strong."</p>
+                        
+                        <p>He simply said,</p>
+                        
+                        <p>"If you run, I'll walk beside you. If you fall, I'll lie down next to you."</p>
+                        
+                        <p>She had her own dreams.</p>
+                        
+                        <p>Not just love — her art, her identity.</p>
+                        
+                        <p>Sanjay never stood in front of them.</p>
+                        
+                        <p>He stood beside them.</p>
+                        
+                        <p>Because loving her didn't mean owning her.</p>
+                        
+                        <p>It meant watching her fly, and cheering the loudest.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 22 -->
+        <div id="page-24" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>They tried living apart for a while.</p>
+                        
+                        <p>Different cities. Different jobs.</p>
+                        
+                        <p>But one random night, Sanjay sent a message:</p>
+                        
+                        <p class="sanjay">"This whole world feels like a waiting room without you."</p>
+                        
+                        <p>And she came back the next weekend.</p>
+                        
+                        <p>Not for him.</p>
+                        
+                        <p>But for them.</p>
+                        
+                        <p>Sanjay once made a scrapbook.</p>
+                        
+                        <p>Filled with movie tickets, screenshots, sketches, and sticky notes.</p>
+                        
+                        <p>On the last page, he wrote:</p>
+                        
+                        <p class="centered">"This isn't our history. This is just Volume One."</p>
+                        
+                        <p>Sameena told him she wasn't perfect.</p>
+                        
+                        <p>Said she's moody, anxious, overthinking.</p>
+                        
+                        <p>He kissed her forehead and said,</p>
+                        
+                        <p>"Good. I'm not in love with perfect. I'm in love with real."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 23 -->
+        <div id="page-25" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>They got caught in the rain once.</p>
+                        
+                        <p>Instead of running, they danced in the middle of the street.</p>
+                        
+                        <p>Soaked. Breathless.</p>
+                        
+                        <p>She looked at him and said,</p>
+                        
+                        <p>"If this was a movie, I wouldn't care how it ends."</p>
+                        
+                        <p>He replied,</p>
+                        
+                        <p>"Good thing we're writing our own."</p>
+                        
+                        <p>Sanjay met her mom.</p>
+                        
+                        <p>It was quiet.</p>
+                        
+                        <p>Tea, stories, long glances.</p>
+                        
+                        <p>After he left, Sameena's mom said,</p>
+                        
+                        <p>"He holds you like you're made of stardust. Not glass."</p>
+                        
+                        <p>Sameena smiled.</p>
+                        
+                        <p>Because that was exactly how it felt.</p>
+                        
+                        <p>They had a day where everything felt wrong.</p>
+                        
+                        <p>Arguments. Tension. Silence.</p>
+                        
+                        <p>But at night, he called and said,</p>
+                        
+                        <p>"Can we just sleep knowing we still care?"</p>
+                        
+                        <p>And she whispered,</p>
+                        
+                        <p>"Even when it's messy, you're still my safest thought."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 24 -->
+        <div id="page-26" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>Sameena once told him:</p>
+                        
+                        <p>"You know what I want in life? Peace. The kind that feels like warm coffee and your hoodie."</p>
+                        
+                        <p>He laughed,</p>
+                        
+                        <p>"That's not a dream. That's just us on a Sunday."</p>
+                        
+                        <p>They never needed big declarations.</p>
+                        
+                        <p>No skywriting. No grand proposals.</p>
+                        
+                        <p>Just the little things.</p>
+                        
+                        <p>Shared playlists.</p>
+                        
+                        <p>Soft "text me when you reach."</p>
+                        
+                        <p>And the quiet knowing:</p>
+                        
+                        <p>This was love — slow, steady, and deep enough to stay.</p>
+                        
+                        <p>One evening, Sanjay said,</p>
+                        
+                        <p>"I don't know where life will take us."</p>
+                        
+                        <p>Sameena interrupted,</p>
+                        
+                        <p>"But I know who I want next to me, wherever that is."</p>
+                        
+                        <p>And that silence that followed?</p>
+                        
+                        <p>It said more than words ever could.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 25 -->
+        <div id="page-27" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>They had dreams — different, but not divided.</p>
+                        
+                        <p>He wanted to teach.</p>
+                        
+                        <p>She wanted to travel.</p>
+                        
+                        <p>So they made a plan:</p>
+                        
+                        <p>Every city she paints, he'd visit and teach.</p>
+                        
+                        <p>Everywhere love leads — they'll follow.</p>
+                        
+                        <p>Sameena once whispered,</p>
+                        
+                        <p>"What if we fall out of love someday?"</p>
+                        
+                        <p>He looked at her seriously and said,</p>
+                        
+                        <p>"Then I'll fall back in. Again and again. Until love is tired of running from us."</p>
+                        
+                        <p>They stood at a wedding. Not theirs.</p>
+                        
+                        <p>But watching vows being exchanged,</p>
+                        
+                        <p>Sameena squeezed his hand and smiled.</p>
+                        
+                        <p>Sanjay mouthed,</p>
+                        
+                        <p>"We'll get there. But we're already forever, aren't we?"</p>
+                        
+                        <p>One night, he was quiet.</p>
+                        
+                        <p>Tired. Heavy.</p>
+                        
+                        <p>She didn't ask what was wrong.</p>
+                        
+                        <p>She just laid her head on his lap and whispered,</p>
+                        
+                        <p>"If you can't be strong today, let me be enough for both of us."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Page 26 -->
+        <div id="page-28" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <div class="novel-text">
+                        <p>They started writing letters again.</p>
+                        
+                        <p>Even though they lived minutes apart.</p>
+                        
+                        <p>Because sometimes,</p>
+                        
+                        <p>a written 'I miss you' feels like a heartbeat folded into paper.</p>
+                        
+                        <p>And they both knew:</p>
+                        
+                        <p>Some loves deserve ink, not just pixels.</p>
+                        
+                        <p>Sameena held his face one day and said,</p>
+                        
+                        <p>"Thank you for never asking me to shrink to be loved."</p>
+                        
+                        <p>Sanjay smiled, kissed her palm, and whispered,</p>
+                        
+                        <p>"Why would I? I fell in love with your full volume."</p>
+                        
+                        <p>Years later.</p>
+                        
+                        <p>They're sitting on a balcony.</p>
+                        
+                        <p>Sun setting. Quiet music.</p>
+                        
+                        <p>She looks at him and asks,</p>
+                        
+                        <p>"Would you choose me again?"</p>
+                        
+                        <p>He replies,</p>
+                        
+                        <p>"Even in every lifetime where we never meet — I'd still look for you."</p>
+                        
+                        <p>And that's how their story lives.</p>
+                        
+                        <p>Not just in chapters.</p>
+                        
+                        <p>But in every little moment where love whispered,</p>
+                        
+                        <p>"You're home."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Author Bio -->
+        <div id="page-29" class="page">
+            <div class="a5-page">
+                <div class="page-content">
+                    <h2 class="page-title">Author Bio</h2>
+                    <div class="novel-text">
+                        <p>Athil S. is a heartfelt storyteller who writes about the quiet corners of love, loss, and healing.</p>
+                        
+                        <p>With a deep affection for emotional storytelling, Athil's work often reflects the unseen conversations between souls — raw, honest, and poetic.</p>
+                        
+                        <p>When not writing, Athil finds solace in music, stargazing, and coffee-fueled midnight thoughts.</p>
+                        
+                        <div class="text-center mt-12">
+                            <p class="chapter-title text-xl">The End</p>
+                            <p class="novel-text italic text-gray-600 mt-4">"When hearts whisper, love speaks the loudest."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html> 

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Book Library Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .user-card {
+            transition: all 0.3s ease;
+        }
+        .user-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-6">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900">📚 E-Book Library Admin</h1>
+                        <p class="text-gray-600">User Statistics & Library Card Management</p>
+                    </div>
+                    <div class="flex space-x-4">
+                        <button id="refreshBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                            🔄 Refresh Data
+                        </button>
+                        <button id="exportBtn" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                            📊 Export Stats
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Statistics Overview -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="stats-card rounded-lg p-6">
+                    <div class="flex items-center">
+                        <div class="flex-1">
+                            <p class="text-blue-100">Total Users</p>
+                            <p class="text-3xl font-bold" id="totalUsers">-</p>
+                        </div>
+                        <div class="text-4xl">👥</div>
+                    </div>
+                </div>
+                
+                <div class="stats-card rounded-lg p-6">
+                    <div class="flex items-center">
+                        <div class="flex-1">
+                            <p class="text-blue-100">Total Sessions</p>
+                            <p class="text-3xl font-bold" id="totalSessions">-</p>
+                        </div>
+                        <div class="text-4xl">📖</div>
+                    </div>
+                </div>
+                
+                <div class="stats-card rounded-lg p-6">
+                    <div class="flex items-center">
+                        <div class="flex-1">
+                            <p class="text-blue-100">Total Pages Read</p>
+                            <p class="text-3xl font-bold" id="totalPagesRead">-</p>
+                        </div>
+                        <div class="text-4xl">📄</div>
+                    </div>
+                </div>
+                
+                <div class="stats-card rounded-lg p-6">
+                    <div class="flex items-center">
+                        <div class="flex-1">
+                            <p class="text-blue-100">Name Combinations</p>
+                            <p class="text-3xl font-bold" id="totalNameCombos">-</p>
+                        </div>
+                        <div class="text-4xl">💕</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search and Filter -->
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Search by Library ID</label>
+                        <input type="text" id="searchInput" placeholder="Enter Library ID..." 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="flex items-end">
+                        <button id="searchBtn" class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors">
+                            🔍 Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Table -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-xl font-semibold text-gray-900">Library Card Holders</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Library ID</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Access</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Access Count</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Pages</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody" class="bg-white divide-y divide-gray-200">
+                            <!-- User rows will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- User Details Modal -->
+            <div id="userModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
+                <div class="flex items-center justify-center min-h-screen p-4">
+                    <div class="bg-white rounded-lg max-w-4xl w-full max-h-screen overflow-y-auto">
+                        <div class="px-6 py-4 border-b border-gray-200">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-lg font-semibold text-gray-900">User Details</h3>
+                                <button id="closeModal" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div id="userDetails">
+                                <!-- User details will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        class AdminPanel {
+            constructor() {
+                this.users = [];
+                this.initializeElements();
+                this.bindEvents();
+                this.loadData();
+            }
+
+            initializeElements() {
+                this.refreshBtn = document.getElementById('refreshBtn');
+                this.exportBtn = document.getElementById('exportBtn');
+                this.searchInput = document.getElementById('searchInput');
+                this.searchBtn = document.getElementById('searchBtn');
+                this.usersTableBody = document.getElementById('usersTableBody');
+                this.userModal = document.getElementById('userModal');
+                this.closeModal = document.getElementById('closeModal');
+                this.userDetails = document.getElementById('userDetails');
+            }
+
+            bindEvents() {
+                this.refreshBtn.addEventListener('click', () => this.loadData());
+                this.exportBtn.addEventListener('click', () => this.exportData());
+                this.searchBtn.addEventListener('click', () => this.searchUsers());
+                this.closeModal.addEventListener('click', () => this.hideModal());
+                
+                this.searchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.searchUsers();
+                });
+
+                // Close modal when clicking outside
+                this.userModal.addEventListener('click', (e) => {
+                    if (e.target === this.userModal) this.hideModal();
+                });
+            }
+
+            async loadData() {
+                try {
+                    this.refreshBtn.disabled = true;
+                    this.refreshBtn.textContent = '🔄 Loading...';
+
+                    const response = await fetch('http://localhost:5000/api/admin/stats');
+                    const data = await response.json();
+
+                    if (data.success) {
+                        this.users = data.users;
+                        this.updateStatistics(data.stats);
+                        this.renderUsersTable();
+                    } else {
+                        alert('Failed to load data: ' + data.error);
+                    }
+                } catch (error) {
+                    alert('Network error: ' + error.message);
+                } finally {
+                    this.refreshBtn.disabled = false;
+                    this.refreshBtn.textContent = '🔄 Refresh Data';
+                }
+            }
+
+            updateStatistics(stats) {
+                document.getElementById('totalUsers').textContent = stats.total_users || 0;
+                document.getElementById('totalSessions').textContent = stats.total_sessions || 0;
+                document.getElementById('totalPagesRead').textContent = stats.total_pages_read || 0;
+                document.getElementById('totalNameCombos').textContent = stats.total_name_combinations || 0;
+            }
+
+            renderUsersTable() {
+                this.usersTableBody.innerHTML = '';
+
+                this.users.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.className = 'hover:bg-gray-50 user-card cursor-pointer';
+                    row.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${user.library_id}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${this.formatDate(user.created_at)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${this.formatDate(user.last_access)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${user.access_count}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${user.total_pages_read || 0}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <button class="text-blue-600 hover:text-blue-900" onclick="adminPanel.viewUserDetails('${user.user_id}')">
+                                👁️ View Details
+                            </button>
+                        </td>
+                    `;
+                    this.usersTableBody.appendChild(row);
+                });
+            }
+
+            searchUsers() {
+                const searchTerm = this.searchInput.value.trim().toLowerCase();
+                
+                if (!searchTerm) {
+                    this.renderUsersTable();
+                    return;
+                }
+
+                const filteredUsers = this.users.filter(user => 
+                    user.library_id.toLowerCase().includes(searchTerm)
+                );
+
+                this.renderFilteredUsers(filteredUsers);
+            }
+
+            renderFilteredUsers(filteredUsers) {
+                this.usersTableBody.innerHTML = '';
+
+                if (filteredUsers.length === 0) {
+                    this.usersTableBody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                                No users found matching "${this.searchInput.value}"
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                filteredUsers.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.className = 'hover:bg-gray-50 user-card cursor-pointer';
+                    row.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${user.library_id}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${this.formatDate(user.created_at)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${this.formatDate(user.last_access)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${user.access_count}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${user.total_pages_read || 0}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <button class="text-blue-600 hover:text-blue-900" onclick="adminPanel.viewUserDetails('${user.user_id}')">
+                                👁️ View Details
+                            </button>
+                        </td>
+                    `;
+                    this.usersTableBody.appendChild(row);
+                });
+            }
+
+            async viewUserDetails(userId) {
+                try {
+                    const response = await fetch(`http://localhost:5000/api/user-stats/${userId}`);
+                    const data = await response.json();
+
+                    if (data.success) {
+                        this.showUserDetails(data);
+                    } else {
+                        alert('Failed to load user details: ' + data.error);
+                    }
+                } catch (error) {
+                    alert('Network error: ' + error.message);
+                }
+            }
+
+            showUserDetails(data) {
+                const user = data.user;
+                const names = data.names_used;
+                const sessionStats = data.session_stats;
+
+                this.userDetails.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="text-lg font-semibold mb-4">📋 User Information</h4>
+                            <div class="space-y-2">
+                                <p><strong>Library ID:</strong> ${user.library_id}</p>
+                                <p><strong>Created:</strong> ${this.formatDate(user.created_at)}</p>
+                                <p><strong>Last Access:</strong> ${this.formatDate(user.last_access)}</p>
+                                <p><strong>Total Access:</strong> ${user.access_count} times</p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-semibold mb-4">📊 Reading Statistics</h4>
+                            <div class="space-y-2">
+                                <p><strong>Total Sessions:</strong> ${sessionStats.total_sessions}</p>
+                                <p><strong>Total Pages Read:</strong> ${sessionStats.total_pages_read}</p>
+                                <p><strong>Average Pages/Session:</strong> ${sessionStats.avg_pages_per_session}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <h4 class="text-lg font-semibold mb-4">💕 Name Combinations Used</h4>
+                        ${names.length > 0 ? `
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                ${names.map(name => `
+                                    <div class="bg-gray-50 p-4 rounded-lg">
+                                        <p><strong>Female:</strong> ${name.female_name}</p>
+                                        <p><strong>Male:</strong> ${name.male_name}</p>
+                                        <p><strong>Used:</strong> ${name.usage_count} times</p>
+                                        <p><strong>First Used:</strong> ${this.formatDate(name.created_at)}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : '<p class="text-gray-500">No name combinations recorded yet.</p>'}
+                    </div>
+                `;
+
+                this.showModal();
+            }
+
+            showModal() {
+                this.userModal.classList.remove('hidden');
+            }
+
+            hideModal() {
+                this.userModal.classList.add('hidden');
+            }
+
+            formatDate(dateString) {
+                if (!dateString) return 'N/A';
+                const date = new Date(dateString);
+                return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+            }
+
+            exportData() {
+                const csvContent = this.generateCSV();
+                const blob = new Blob([csvContent], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `ebook-library-stats-${new Date().toISOString().split('T')[0]}.csv`;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }
+
+            generateCSV() {
+                const headers = ['Library ID', 'Created', 'Last Access', 'Access Count', 'Total Pages Read', 'Total Sessions'];
+                const rows = this.users.map(user => [
+                    user.library_id,
+                    user.created_at,
+                    user.last_access,
+                    user.access_count,
+                    user.total_pages_read || 0,
+                    user.total_sessions || 0
+                ]);
+
+                return [headers, ...rows].map(row => row.join(',')).join('\n');
+            }
+        }
+
+        // Initialize admin panel when page loads
+        let adminPanel;
+        document.addEventListener('DOMContentLoaded', () => {
+            adminPanel = new AdminPanel();
+        });
+    </script>
+</body>
+</html> 
