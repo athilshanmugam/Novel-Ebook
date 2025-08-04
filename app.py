@@ -1,22 +1,33 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import sqlite3
 import uuid
 import logging
 from datetime import datetime
 from contextlib import contextmanager
+import os
+
+# Import configuration
+from config import config
+
+# Get environment
+env = os.environ.get('FLASK_ENV', 'development')
+app_config = config[env]
 
 # Configure logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=getattr(logging, app_config.LOG_LEVEL))
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
-CORS(app)
+app.config.from_object(app_config)
+
+# Configure CORS with origins from config
+CORS(app, origins=app_config.CORS_ORIGINS)
 
 @contextmanager
 def get_db_connection():
     """Context manager for database connections"""
-    conn = sqlite3.connect('names.db')
+    conn = sqlite3.connect(app_config.DATABASE_URL)
     conn.row_factory = sqlite3.Row  # Enable row factory for better data access
     try:
         yield conn
@@ -152,7 +163,7 @@ def backup_database():
     try:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         backup_filename = f"names_backup_{timestamp}.db"
-        shutil.copy2('names.db', backup_filename)
+        shutil.copy2(app_config.DATABASE_URL, backup_filename)
         logger.info(f"Database backed up to {backup_filename}")
         return True
     except Exception as e:
@@ -498,6 +509,18 @@ def create_backup():
 def home():
     return 'E-Book Library API is running!'
 
+@app.route('/frontend/')
+def frontend():
+    return send_from_directory('frontend', 'index.html')
+
+@app.route('/frontend/<path:filename>')
+def serve_frontend(filename):
+    return send_from_directory('frontend', filename)
+
 if __name__ == '__main__':
     init_db()
-    app.run(debug=False, host='0.0.0.0', port=5000)
+    app.run(
+        debug=app_config.FLASK_DEBUG, 
+        host=app_config.HOST, 
+        port=app_config.PORT
+    )

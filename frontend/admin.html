@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E-Book Library Admin Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="config.js"></script>
     <style>
         .stats-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -188,7 +189,7 @@
                     this.refreshBtn.disabled = true;
                     this.refreshBtn.textContent = '🔄 Loading...';
 
-                    const response = await fetch('http://localhost:5000/api/admin/stats');
+                    const response = await fetch(frontendConfig.adminStatsUrl);
                     const data = await response.json();
 
                     if (data.success) {
@@ -285,7 +286,7 @@
 
             async viewUserDetails(userId) {
                 try {
-                    const response = await fetch(`http://localhost:5000/api/user-stats/${userId}`);
+                    const response = await fetch(`${frontendConfig.userStatsUrl}/${userId}`);
                     const data = await response.json();
 
                     if (data.success) {

@@ -75,11 +75,17 @@ A beautiful, interactive e-book with a complete library card system for tracking
 ```
 novel/
 ├── app.py                 # Flask backend with library card system
-├── index.html            # Main e-book interface
-├── admin.html            # Admin dashboard
-├── script.js             # Frontend functionality
+├── config.py              # Configuration management
+├── requirements.txt       # Python dependencies
+├── create_env.py          # Helper script to create .env file
+├── .env                   # Environment variables (create this)
+├── frontend/              # Frontend files
+│   ├── index.html        # Main e-book interface
+│   ├── admin.html        # Admin dashboard
+│   ├── script.js         # Frontend functionality
+│   ├── config.js         # Frontend configuration
+│   └── book-cover.png    # Book cover image
 ├── names.db              # SQLite database
-├── book-cover.png        # Book cover image
 ├── README.md             # This file
 └── When Hearts Whisper ..pdf  # Original PDF source
 ```
@@ -163,23 +169,59 @@ The e-book provides a premium reading experience with:
 - Personalized character names
 - Responsive design for all screen sizes
 
+## Environment Configuration
+
+The application uses environment variables for configuration. Create a `.env` file in the project root with the following variables:
+
+```bash
+# Environment Configuration
+FLASK_ENV=development
+FLASK_DEBUG=True
+
+# Database Configuration
+DATABASE_URL=names.db
+
+# Server Configuration
+HOST=0.0.0.0
+PORT=5000
+
+# URLs
+PRODUCTION_URL=https://novel-ebook.onrender.com
+LOCAL_URL=http://localhost:5000
+
+# CORS Configuration
+CORS_ORIGINS=http://localhost:3000,http://localhost:5000,https://novel-ebook.onrender.com
+
+# Logging
+LOG_LEVEL=INFO
+
+# Security (change in production)
+SECRET_KEY=your-secret-key-here
+```
+
 ## Getting Started
 
 1. **Install Dependencies**:
    ```bash
-   pip install flask flask-cors
+   pip install -r requirements.txt
    ```
 
-2. **Run the Application**:
+2. **Set up Environment**:
+   ```bash
+   python create_env.py
+   ```
+   This will create a `.env` file with default values. You can then customize the values as needed.
+
+3. **Run the Application**:
    ```bash
    python app.py
    ```
 
-3. **Access the E-Book**:
-   - Reader interface: `http://localhost:5000`
-   - Admin panel: Open `admin.html` in browser
+4. **Access the E-Book**:
+   - Reader interface: `http://localhost:5000/frontend/`
+   - Admin panel: `http://localhost:5000/frontend/admin.html`
 
-4. **Create Your First Library Card**:
+5. **Create Your First Library Card**:
    - Click "New Card" to get a library ID
    - Use this ID to login and start reading
 

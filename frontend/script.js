@@ -103,7 +103,7 @@ class EBookReader {
             this.createCardBtn.disabled = true;
             this.createCardBtn.textContent = 'Creating...';
             
-            const response = await fetch('http://localhost:5000/api/create-user', {
+            const response = await fetch(frontendConfig.createUserUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({})
@@ -142,7 +142,7 @@ class EBookReader {
             this.loginBtn.disabled = true;
             this.loginBtn.textContent = 'Logging in...';
             
-            const response = await fetch('http://localhost:5000/api/login', {
+            const response = await fetch(frontendConfig.loginUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ library_id: libraryId })
@@ -185,7 +185,7 @@ class EBookReader {
 
     async loadUserStats() {
         try {
-            const response = await fetch(`http://localhost:5000/api/user-stats/${this.currentUser.user_id}`);
+            const response = await fetch(`${frontendConfig.userStatsUrl}/${this.currentUser.user_id}`);
             const data = await response.json();
             
             if (data.success) {
@@ -253,7 +253,7 @@ class EBookReader {
     }
 
     async saveNamesToDatabase(female, male) {
-        const response = await fetch('http://localhost:5000/api/save-names', {
+                    const response = await fetch(frontendConfig.saveNamesUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
@@ -268,7 +268,7 @@ class EBookReader {
     async updateSessionProgress() {
         if (this.currentSession) {
             try {
-                await fetch('http://localhost:5000/api/update-session', {
+                await fetch(frontendConfig.updateSessionUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
@@ -285,7 +285,7 @@ class EBookReader {
     async endCurrentSession() {
         if (this.currentSession) {
             try {
-                await fetch('http://localhost:5000/api/end-session', {
+                await fetch(frontendConfig.endSessionUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
