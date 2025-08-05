@@ -15,6 +15,11 @@ class EBookReader {
         // Touch/swipe variables
         this.startX = 0;
         this.endX = 0;
+        this.startY = 0;
+        this.endY = 0;
+        this.isSwiping = false;
+        this.swipeThreshold = 80; // Increased threshold for less sensitive swipes
+        this.minSwipeDistance = 50; // Minimum distance for swipe
         
         this.initializeElements();
         this.bindEvents();
@@ -70,13 +75,22 @@ class EBookReader {
             if (e.key === 'ArrowRight') this.nextPage();
         });
 
-        // Touch/swipe support for mobile
+        // Touch/swipe support for mobile with improved sensitivity
         document.addEventListener('touchstart', (e) => {
             this.startX = e.changedTouches[0].screenX;
+            this.startY = e.changedTouches[0].screenY;
+            this.isSwiping = false;
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            if (this.isSwiping) {
+                e.preventDefault(); // Prevent scrolling during swipe
+            }
         });
 
         document.addEventListener('touchend', (e) => {
             this.endX = e.changedTouches[0].screenX;
+            this.endY = e.changedTouches[0].screenY;
             this.handleSwipe();
         });
     }
@@ -338,14 +352,18 @@ class EBookReader {
     }
 
     handleSwipe() {
-        const swipeThreshold = 50;
-        const diff = this.startX - this.endX;
+        const diffX = this.startX - this.endX;
+        const diffY = this.startY - this.endY;
+        const distance = Math.sqrt(diffX * diffX + diffY * diffY);
 
-        if (Math.abs(diff) > swipeThreshold) {
-            if (diff > 0) {
-                this.nextPage();
-            } else {
-                this.previousPage();
+        // Only process swipe if it's a horizontal gesture and meets minimum distance
+        if (Math.abs(diffX) > Math.abs(diffY) && distance > this.minSwipeDistance) {
+            if (Math.abs(diffX) > this.swipeThreshold) {
+                if (diffX > 0) {
+                    this.nextPage();
+                } else {
+                    this.previousPage();
+                }
             }
         }
     }
@@ -367,8 +385,15 @@ class EBookReader {
         this.updateProgress();
         this.updateSessionProgress();
         
-        // Smooth scroll to top
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Smooth scroll to top (with mobile optimization)
+        if ('scrollBehavior' in document.documentElement.style) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            window.scrollTo(0, 0);
+        }
+        
+        // Add visual feedback for page change on mobile
+        this.addPageChangeFeedback();
     }
 
     nextPage() {
@@ -456,6 +481,43 @@ class EBookReader {
     autoSaveBookmark() {
         this.saveBookmark();
     }
+    
+    // Add visual feedback for page changes on mobile
+    addPageChangeFeedback() {
+        const activePage = document.querySelector('.page.active');
+        if (activePage) {
+            activePage.style.animation = 'none';
+            activePage.offsetHeight; // Trigger reflow
+            activePage.style.animation = 'fadeIn 0.6s ease-in-out';
+        }
+    }
+    
+    // Mobile-specific optimizations
+    optimizeForMobile() {
+        // Prevent zoom on double tap
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', (event) => {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+        
+        // Prevent pull-to-refresh on mobile
+        document.body.style.overscrollBehavior = 'none';
+        
+        // Add touch feedback to buttons
+        const buttons = document.querySelectorAll('.nav-btn, .settings-btn');
+        buttons.forEach(button => {
+            button.addEventListener('touchstart', () => {
+                button.style.transform = 'scale(0.95)';
+            });
+            button.addEventListener('touchend', () => {
+                button.style.transform = 'scale(1)';
+            });
+        });
+    }
 }
 
 // Initialize the e-book reader when the page loads
@@ -474,6 +536,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initial progress update
     reader.updateProgress();
+    
+    // Apply mobile optimizations
+    reader.optimizeForMobile();
     
     // Handle page unload to end session
     window.addEventListener('beforeunload', () => {

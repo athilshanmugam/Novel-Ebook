@@ -22,7 +22,7 @@ app = Flask(__name__)
 app.config.from_object(app_config)
 
 # Configure CORS with origins from config
-CORS(app, origins=app_config.CORS_ORIGINS)
+CORS(app, origins="*", allow_headers="*", methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 
 @contextmanager
 def get_db_connection():
